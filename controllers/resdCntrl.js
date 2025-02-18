@@ -43,14 +43,26 @@ export const createResidency = asyncHandler(async (req, res) => {
 });
 
 // function to get all the documents/residencies
-export const getAllResidencies = asyncHandler(async (req, res) => {
-  const residencies = await prisma.residency.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  res.send(residencies);
-});
+// export const getAllResidencies = asyncHandler(async (req, res) => {
+//   const residencies = await prisma.residency.findMany({
+//     orderBy: {
+//       createdAt: "desc",
+//     },
+//   });
+//   res.send(residencies);
+// });
+export const getAllResidencies = async (req, res) => {
+  try {
+    const residencies = await prisma.residency.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.status(200).json(residencies);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch residencies", error: error.message });
+  }
+};
 
 // function to get a specific document/residency
 export const getResidency = asyncHandler(async (req, res) => {
